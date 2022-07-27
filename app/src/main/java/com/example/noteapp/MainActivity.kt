@@ -44,27 +44,27 @@ class MainActivity : AppCompatActivity() {
         firebaseAnalytics = Firebase.analytics
 
 
-        binding.button.setOnClickListener {
-            buttonActionEvent(
-                "Button_1",
-                "Button_1",
-                firebaseAnalytics
-            )
-        }
-        binding.button2.setOnClickListener {
-            buttonActionEvent(
-                "Button_2",
-                "Button_2",
-                firebaseAnalytics
-            )
-        }
-        binding.button3.setOnClickListener {
-            buttonActionEvent(
-                "Button_3",
-                "Button_3",
-                firebaseAnalytics
-            )
-        }
+        /*binding.button.setOnClickListener {
+             buttonActionEvent(
+                 "Button_1",
+                 "Button_1",
+                 firebaseAnalytics
+             )
+         }
+         binding.button2.setOnClickListener {
+             buttonActionEvent(
+                 "Button_2",
+                 "Button_2",
+                 firebaseAnalytics
+             )
+         }
+         binding.button3.setOnClickListener {
+             buttonActionEvent(
+                 "Button_3",
+                 "Button_3",
+                 firebaseAnalytics
+             )
+         }*/
 
         // Test crash
         /*val crashButton = Button(this)
