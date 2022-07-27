@@ -25,8 +25,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Obtain the FirebaseAnalytics instance.
+        firebaseAnalytics = Firebase.analytics
         // FCM Token
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+        /*FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
                 println("Fetching FCM registration token failed")
                 return@OnCompleteListener
@@ -38,10 +40,7 @@ class MainActivity : AppCompatActivity() {
             // Log and toast
             println(token)
             Toast.makeText(baseContext, token, Toast.LENGTH_SHORT).show()
-        })
-
-        // Obtain the FirebaseAnalytics instance.
-        firebaseAnalytics = Firebase.analytics
+        })*/
 
 
         /*binding.button.setOnClickListener {
