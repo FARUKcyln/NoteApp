@@ -70,14 +70,15 @@
 
     <ImageView
         android:id="@+id/registerInfo"
-        android:layout_width="390dp"
-        android:layout_height="366dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/or_login_with"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/sign_up_text"
         app:srcCompat="@drawable/register_rectangle"
-        tools:ignore="ContentDescription"/>
+        tools:ignore="ContentDescription" />
 
     <EditText
         android:id="@+id/FullName"
@@ -138,7 +139,7 @@
         android:inputType="textPassword"
         android:minHeight="48dp"
         android:textColorHint="#757575"
-        app:layout_constraintBottom_toTopOf="@id/sign_up"
+        app:layout_constraintBottom_toTopOf="@+id/spinner"
         app:layout_constraintEnd_toEndOf="@+id/registerInfo"
         app:layout_constraintStart_toStartOf="@+id/registerInfo"
         app:layout_constraintTop_toBottomOf="@id/Password"
@@ -148,7 +149,6 @@
         android:id="@+id/sign_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
         android:backgroundTint="#0111FD"
         android:text="@string/sign_up"
         android:textColor="@color/white"
@@ -156,6 +156,32 @@
         app:layout_constraintEnd_toEndOf="@+id/registerInfo"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="@+id/registerInfo"
-        app:layout_constraintTop_toBottomOf="@id/ConfirmPassword"
+        app:layout_constraintTop_toBottomOf="@id/questionAnswer"
         tools:ignore="DuplicateSpeakableTextCheck" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="280dp"
+        android:layout_height="48dp"
+        android:contentDescription="@string/choose_account_recovery_question"
+        app:layout_constraintBottom_toTopOf="@id/questionAnswer"
+        app:layout_constraintEnd_toEndOf="@+id/registerInfo"
+        app:layout_constraintStart_toStartOf="@+id/registerInfo"
+        app:layout_constraintTop_toBottomOf="@id/ConfirmPassword" />
+
+    <EditText
+        android:id="@+id/questionAnswer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/answer"
+        android:inputType="text"
+        android:minHeight="48dp"
+        android:textColorHint="#757575"
+        android:drawableStart="@drawable/ic_baseline_question_answer_24"
+        app:layout_constraintBottom_toTopOf="@id/sign_up"
+        app:layout_constraintEnd_toEndOf="@+id/registerInfo"
+        app:layout_constraintStart_toStartOf="@+id/registerInfo"
+        app:layout_constraintTop_toBottomOf="@id/spinner" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,4 +13,10 @@
     <string name="or_login_with">----------------------- Or login with -----------------------</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="full_name">Full Name</string>
+    <string name="choose_account_recovery_question">Choose Account Recovery Question</string>
+    <string name="answer">Answer</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="security_question">Security Question</string>
+    <string name="question_answer">Question Answer</string>
+    <string name="reset_password">Reset Password</string>
 </resources>

@@ -72,7 +72,10 @@
         android:layout_width="113dp"
         android:layout_height="19dp"
         android:layout_marginTop="2dp"
+        android:clickable="true"
+        android:focusable="true"
         android:text="@string/forget_password"
+        android:textColor="#2196F3"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/sign_in"
         app:layout_constraintEnd_toEndOf="@+id/userInfo"
@@ -122,8 +125,10 @@
             android:id="@+id/forward_sign_up"
             android:layout_width="wrap_content"
             android:layout_height="24dp"
+            android:clickable="true"
+            android:focusable="true"
             android:text="@string/sign_up"
-            android:textColor="@color/black"
+            android:textColor="#03A9F4"
             android:textSize="16sp" />
     </LinearLayout>
 
