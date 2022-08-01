@@ -1,38 +1,57 @@
 package com.example.noteapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.AutoCompleteTextView
 import android.widget.TextView
 import android.widget.Toast
 import com.example.noteapp.databinding.ActivityForgotPasswordBinding
-import com.example.noteapp.databinding.ActivityMainBinding
-import com.example.noteapp.models.SecurityQuestion
 import com.google.firebase.database.FirebaseDatabase
 
 class ForgotPassword : AppCompatActivity() {
 
     lateinit var binding: ActivityForgotPasswordBinding
+    private var questionAnswer: String = ""
+    private var userKey: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityForgotPasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         binding.forgotMail.setOnFocusChangeListener { view, b ->
-            getSecurityQuestion(
-                binding.forgotMail.text.toString(),
-                binding.securityQuestion
-            )
+            if (!b) {
+                getSecurityQuestion(
+                    binding.forgotMail.text.toString(),
+                    binding.securityQuestion,
+                    binding.questionAnswer
+                )
+            }
+        }
+
+        binding.resetPassword.setOnClickListener {
+            if (binding.questionAnswer.text.isNotEmpty() && !binding.forgotMail.isFocused) {
+                println(binding.questionAnswer.text.toString())
+                println(questionAnswer)
+                if (binding.questionAnswer.text.toString() == questionAnswer) {
+                    val intent = Intent(this, ResetPassword::class.java)
+                    intent.putExtra("Key", userKey)
+                    startActivity(intent)
+                }
+            }
         }
 
 
     }
 
-    private fun getSecurityQuestion(email: String, questionTextView: TextView): String {
+    private fun getSecurityQuestion(
+        email: String,
+        questionTextView: TextView,
+        questionAnswerTextView: TextView,
+    ) {
 
         var securityQuestionHashMap: HashMap<String, String>
-        var securityQuestionAnswer: String? = null
         val database = FirebaseDatabase.getInstance().getReference("Users")
         database.get().addOnSuccessListener {
             val hashMap: HashMap<String, HashMap<String, String>> =
@@ -44,7 +63,8 @@ class ForgotPassword : AppCompatActivity() {
                     found = true
                     securityQuestionHashMap = value["securityQuestion"] as HashMap<String, String>
                     questionTextView.text = securityQuestionHashMap["question"]
-                    securityQuestionAnswer = securityQuestionHashMap["question"].toString()
+                    questionAnswer = securityQuestionHashMap["answer"] as String
+                    userKey = key
                     break
                 }
             }
@@ -56,11 +76,10 @@ class ForgotPassword : AppCompatActivity() {
         }.addOnFailureListener {
             Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
         }
-        return if (securityQuestionAnswer == null) {
+        if (questionAnswer == "") {
+            questionAnswerTextView.text = ""
             questionTextView.text = ""
-            "null"
-        } else {
-            securityQuestionAnswer as String
+            userKey = ""
         }
 
     }

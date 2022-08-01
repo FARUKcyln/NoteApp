@@ -69,14 +69,16 @@
 
     <TextView
         android:id="@+id/forgot_password"
-        android:layout_width="113dp"
-        android:layout_height="19dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:clickable="true"
         android:focusable="true"
+        android:gravity="center"
+        android:minHeight="48dp"
         android:text="@string/forget_password"
-        android:textColor="#2196F3"
-        android:textSize="14sp"
+        android:textColor="#1976D2"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/sign_in"
         app:layout_constraintEnd_toEndOf="@+id/userInfo"
         app:layout_constraintHorizontal_bias="0.764"
@@ -128,8 +130,9 @@
             android:clickable="true"
             android:focusable="true"
             android:text="@string/sign_up"
-            android:textColor="#03A9F4"
-            android:textSize="16sp" />
+            android:textColor="#0277BD"
+            android:textSize="16sp"
+            tools:ignore="TouchTargetSizeCheck" />
     </LinearLayout>
 
     <TextView
@@ -158,7 +161,7 @@
         app:layout_constraintVertical_bias="0.28">
 
         <ImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/facebook_login"
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:layout_gravity="center"
@@ -171,7 +174,7 @@
             android:layout_height="wrap_content" />
 
         <ImageView
-            android:id="@+id/imageView7"
+            android:id="@+id/google_login"
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:layout_gravity="center"

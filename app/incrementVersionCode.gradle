@@ -1,0 +1,31 @@
+
+task('incrementVersionCode').doLast {
+    Properties versionProps = new Properties()
+    def versionPropsFile = file('version.properties')
+    if (versionPropsFile.exists()) {
+        versionProps.load(new FileInputStream(versionPropsFile))
+    }
+    def buildNumber = (versionProps['VERSION_CODE'] ?: "0").toInteger() + 1
+    versionProps['VERSION_CODE'] = buildNumber.toString()
+    versionProps.store(versionPropsFile.newWriter(), null)
+}
+
+tasks.whenTaskAdded { task ->
+    if (task.name.endsWith("DebugBuildConfig")) {
+        task.dependsOn 'incrementVersionCode'
+    }
+}
+
+build.dependsOn incrementVersionCode
+build.mustRunAfter incrementVersionCode
+
+ext.getBuildNumber = {
+    Properties versionProps = new Properties()
+    def versionPropsFile = file('version.properties')
+    if (versionPropsFile.exists()) {
+        versionProps.load(new FileInputStream(versionPropsFile))
+    } else {
+        return 1
+    }
+    return versionProps['VERSION_CODE'].toInteger()
+}

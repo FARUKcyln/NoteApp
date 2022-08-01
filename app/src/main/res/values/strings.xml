@@ -19,4 +19,5 @@
     <string name="security_question">Security Question</string>
     <string name="question_answer">Question Answer</string>
     <string name="reset_password">Reset Password</string>
+    <string name="new_password">New Password</string>
 </resources>

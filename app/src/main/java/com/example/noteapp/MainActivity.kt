@@ -2,23 +2,29 @@ package com.example.noteapp
 
 import android.content.Intent
 import android.graphics.Paint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.noteapp.databinding.ActivityMainBinding
-import com.example.noteapp.models.User
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.database.*
-import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
 
+    private val RC_SIGN_IN: Int = 1
+
     private lateinit var binding: ActivityMainBinding
     private lateinit var firebaseAnalytics: FirebaseAnalytics
+    private lateinit var gso: GoogleSignInOptions
+    private lateinit var mGoogleSignInClient: GoogleSignInClient
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         binding.forgotPassword.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         binding.forwardSignUp.paintFlags = Paint.UNDERLINE_TEXT_FLAG
 
-        binding.forwardSignUp.setOnClickListener{
+        binding.forwardSignUp.setOnClickListener {
             buttonActionEvent("sign_up", firebaseAnalytics)
             val intent = Intent(this, Register::class.java)
             startActivity(intent)
@@ -44,10 +50,36 @@ class MainActivity : AppCompatActivity() {
             login(binding.Email.text.toString(), binding.signInPassword.text.toString())
         }
 
-        binding.forgotPassword.setOnClickListener{
+        binding.forgotPassword.setOnClickListener {
             val intent = Intent(this, ForgotPassword::class.java)
             startActivity(intent)
         }
+
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+
+        // Check for existing Google Sign In account, if the user is already signed in
+        // the GoogleSignInAccount will be non-null.
+        // Check for existing Google Sign In account, if the user is already signed in
+        // the GoogleSignInAccount will be non-null.
+        val account = GoogleSignIn.getLastSignedInAccount(this)
+
+
+        binding.googleLogin.setOnClickListener {
+
+            val signInIntent = mGoogleSignInClient.signInIntent
+            startActivityForResult(signInIntent, RC_SIGN_IN)
+        }
+
 
         // FCM Token
         /*FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
@@ -107,6 +139,34 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
+            handleSignInResult(task)
+        }
+    }
+
+    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+        try {
+            val account = completedTask.getResult(ApiException::class.java)
+
+            // Signed in successfully, show authenticated UI.
+            println(account.email)
+            Toast.makeText(this, "Successfully Sign In", Toast.LENGTH_SHORT).show()
+
+        } catch (e: ApiException) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            println("signInResult:failed code=" + e.statusCode)
+
+        }
+    }
+
     private fun buttonActionEvent(
         buttonText: String,
         analytics: FirebaseAnalytics
@@ -118,7 +178,6 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun login(email: String, password: String) {
-
 
 
         val database = FirebaseDatabase.getInstance().getReference("Users")
