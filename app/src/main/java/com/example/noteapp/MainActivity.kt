@@ -17,6 +17,7 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 
+
 class MainActivity : AppCompatActivity() {
 
     private val RC_SIGN_IN: Int = 1
@@ -69,9 +70,10 @@ class MainActivity : AppCompatActivity() {
 
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
-        // Check for existing Google Sign In account, if the user is already signed in
-        // the GoogleSignInAccount will be non-null.
         val account = GoogleSignIn.getLastSignedInAccount(this)
+        if (account != null) {
+            revokeAccess()
+        }
 
 
         binding.googleLogin.setOnClickListener {
@@ -165,6 +167,13 @@ class MainActivity : AppCompatActivity() {
             println("signInResult:failed code=" + e.statusCode)
 
         }
+    }
+
+    private fun revokeAccess() {
+        mGoogleSignInClient.revokeAccess()
+            .addOnCompleteListener(this) {
+                // ...
+            }
     }
 
     private fun buttonActionEvent(
