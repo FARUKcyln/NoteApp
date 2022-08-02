@@ -119,7 +119,7 @@
             android:textColor="@color/black"
             android:textSize="16sp" />
 
-        <Space
+        <View
             android:layout_width="10dp"
             android:layout_height="wrap_content" />
 
@@ -141,11 +141,11 @@
         android:layout_height="wrap_content"
         android:text="@string/or_login_with"
         android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/socialMedia"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/haveAnAccount"
-        app:layout_constraintBottom_toTopOf="@id/socialMedia"
         tools:layout_editor_absoluteY="516dp" />
 
     <LinearLayout
@@ -169,7 +169,7 @@
             app:srcCompat="@drawable/facebook_icon"
             tools:ignore="ContentDescription" />
 
-        <Space
+        <View
             android:layout_width="10dp"
             android:layout_height="wrap_content" />
 

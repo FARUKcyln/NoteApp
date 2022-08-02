@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     private lateinit var gso: GoogleSignInOptions
     private lateinit var mGoogleSignInClient: GoogleSignInClient
+    private lateinit var userKey: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             .build()
 
         // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
 
         // Check for existing Google Sign In account, if the user is already signed in
@@ -171,9 +172,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun revokeAccess() {
         mGoogleSignInClient.revokeAccess()
-            .addOnCompleteListener(this) {
-                // ...
-            }
+            .addOnCompleteListener(this) {}
     }
 
     private fun buttonActionEvent(
@@ -194,11 +193,12 @@ class MainActivity : AppCompatActivity() {
             val hashMap: HashMap<String, HashMap<String, String>> =
                 it.value as HashMap<String, HashMap<String, String>>
 
-            var found: Boolean = false
+            var found = false
             for ((key, value) in hashMap) {
                 if (value["email"].equals(email) && value["password"].equals(password)) {
                     Toast.makeText(this, "Successful", Toast.LENGTH_SHORT).show()
                     found = true
+                    userKey = key
                     break
                 }
             }
