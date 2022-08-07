@@ -3,12 +3,9 @@ package com.example.noteapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.SystemClock
 import android.widget.Toast
-import com.example.noteapp.databinding.ActivityForgotPasswordBinding
-import com.example.noteapp.databinding.ActivityRegisterBinding
 import com.example.noteapp.databinding.ActivityResetPasswordBinding
-import com.example.noteapp.models.User
+import com.example.noteapp.ui.login.LoginActivity
 import com.google.firebase.database.FirebaseDatabase
 
 class ResetPassword : AppCompatActivity() {
@@ -33,7 +30,7 @@ class ResetPassword : AppCompatActivity() {
                         database.updateChildren(user)
                         Toast.makeText(this, "Successfully Changed", Toast.LENGTH_SHORT).show()
                         this.finish()
-                        val newIntent = Intent(this, MainActivity::class.java)
+                        val newIntent = Intent(this, LoginActivity::class.java)
                         startActivity(newIntent)
                     }.addOnFailureListener {
                         Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()

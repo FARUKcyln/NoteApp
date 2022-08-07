@@ -1,11 +1,14 @@
-package com.example.noteapp
+package com.example.noteapp.ui.login
 
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.noteapp.ForgotPassword
+import com.example.noteapp.Register
 import com.example.noteapp.databinding.ActivityMainBinding
+import com.facebook.CallbackManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -16,17 +19,22 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 
 
-class MainActivity : AppCompatActivity() {
-
-    private val RC_SIGN_IN: Int = 1
+class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     private lateinit var gso: GoogleSignInOptions
+    private lateinit var callbackManager: CallbackManager
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var userKey: String
+
+    companion object {
+        private val TAG = LoginActivity::class.java.simpleName
+        private const val RC_SIGN_IN = 1000
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        firebaseInit()
 
         // Obtain the FirebaseAnalytics instance.
         firebaseAnalytics = Firebase.analytics
@@ -84,62 +93,13 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        // FCM Token
-        /*FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                println("Fetching FCM registration token failed")
-                return@OnCompleteListener
-            }
+    }
 
-            // Get new FCM registration token
-            val token = task.result
-
-            // Log and toast
-            println(token)
-            Toast.makeText(baseContext, token, Toast.LENGTH_SHORT).show()
-        })*/
-
-        // Debug View
-        /*binding.button.setOnClickListener {
-             buttonActionEvent(
-                 "Button_1",
-                 "Button_1",
-                 firebaseAnalytics
-             )
-         }
-         binding.button2.setOnClickListener {
-             buttonActionEvent(
-                 "Button_2",
-                 "Button_2",
-                 firebaseAnalytics
-             )
-         }
-         binding.button3.setOnClickListener {
-             buttonActionEvent(
-                 "Button_3",
-                 "Button_3",
-                 firebaseAnalytics
-             )
-         }*/
-
-        // Test crash
-        /*val crashButton = Button(this)
-        crashButton.text = "Test Crash"
-        crashButton.setOnClickListener {
-            if (BuildConfig.DEBUG) {
-                FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false);
-            }
-            throw RuntimeException("Test Crash") // Force a crash
+    private fun firebaseInit() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener {
+            if (!it.isSuccessful)
+                return@addOnCompleteListener
         }
-
-        addContentView(
-            crashButton, ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-        )*/
-
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
