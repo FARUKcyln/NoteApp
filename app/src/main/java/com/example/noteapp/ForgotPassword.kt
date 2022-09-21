@@ -20,7 +20,7 @@ class ForgotPassword : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        binding.forgotMail.setOnFocusChangeListener { view, b ->
+        binding.forgotMail.setOnFocusChangeListener { _, b ->
             if (!b) {
                 getSecurityQuestion(
                     binding.forgotMail.text.toString(),
@@ -50,19 +50,19 @@ class ForgotPassword : AppCompatActivity() {
         questionTextView: TextView,
         questionAnswerTextView: TextView,
     ) {
-
-        var securityQuestionHashMap: HashMap<String, String>
+        var securityQuestionHashMap: HashMap<*, *>
         val database = FirebaseDatabase.getInstance().getReference("Users")
-        database.get().addOnSuccessListener {
-            val hashMap: HashMap<String, HashMap<String, String>> =
-                it.value as HashMap<String, HashMap<String, String>>
 
-            var found: Boolean = false
+        database.get().addOnSuccessListener {
+            val hashMap: HashMap<String, HashMap<String, Any?>> =
+                it.value as HashMap<String, HashMap<String, Any?>>
+
+            var found = false
             for ((key, value) in hashMap) {
-                if (value["email"].equals(email)) {
+                if (value["email"]?.equals(email) == true) {
                     found = true
-                    securityQuestionHashMap = value["securityQuestion"] as HashMap<String, String>
-                    questionTextView.text = securityQuestionHashMap["question"]
+                    securityQuestionHashMap = value["securityQuestion"] as HashMap<*, *>
+                    questionTextView.text = securityQuestionHashMap["question"] as CharSequence?
                     questionAnswer = securityQuestionHashMap["answer"] as String
                     userKey = key
                     break
@@ -81,6 +81,5 @@ class ForgotPassword : AppCompatActivity() {
             questionTextView.text = ""
             userKey = ""
         }
-
     }
 }

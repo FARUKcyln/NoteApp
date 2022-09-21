@@ -87,7 +87,6 @@ class LoginActivity : AppCompatActivity() {
 
 
         binding.googleLogin.setOnClickListener {
-
             val signInIntent = mGoogleSignInClient.signInIntent
             startActivityForResult(signInIntent, RC_SIGN_IN)
         }
@@ -146,9 +145,8 @@ class LoginActivity : AppCompatActivity() {
 
 
     private fun login(email: String, password: String) {
-
-
         val database = FirebaseDatabase.getInstance().getReference("Users")
+
         database.get().addOnSuccessListener {
             val hashMap: HashMap<String, HashMap<String, String>> =
                 it.value as HashMap<String, HashMap<String, String>>
